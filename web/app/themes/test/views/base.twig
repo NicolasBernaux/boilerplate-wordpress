@@ -1,0 +1,11 @@
+{% include 'partials/head.twig' %}
+{% include 'partials/header.twig' %}
+
+{% block body %}
+    {% block content %}
+    {% endblock %}
+
+    <script src="{{ theme.link }}/dist/bundle.js" rel="preload"></script>
+{% endblock %}
+
+{% include 'partials/footer.twig' %}

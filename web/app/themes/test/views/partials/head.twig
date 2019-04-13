@@ -1,0 +1,26 @@
+<!doctype html>
+<html class="no-js" id="html">
+
+<head>
+  <meta charset="{{site.charset}}">
+  <title>
+    {% if wp_title %}
+      {{ wp_title }} - {{ site.name }}
+    {% else %}
+      {{ site.name }}
+    {% endif %}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {# Favicon #}
+
+  {# End Favicon #}
+
+
+  {# CSS #}
+  <link rel="stylesheet" href="{{ theme.link }}/dist/main.css" rel="preload">
+  <meta name="theme-color" content="#ffffff">
+
+  {#{{ wp_head }}#}
+</head>
+<body>
