@@ -3,12 +3,23 @@ const Jarvis = require('webpack-jarvis');
 const UglifyJS = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+require('dotenv').config();
 
 const dev = process.env.NODE_ENV === 'development';
+
+const theme = process.env.THEME_DIRECTORY
 
 let cssLoaders = [
   {
     loader: 'css-loader',
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: loader => [
+        require('autoprefixer'),
+      ]
+    }
   }
 ];
 
@@ -17,19 +28,19 @@ if (!dev) {
     loader: 'postcss-loader',
     options: {
       plugins: loader => [
-        require('autoprefixer')({
-          browsers: ['last 2 versions', 'ie > 8'],
-        }),
+        require('autoprefixer'),
+        require('cssnano')({preset: 'default'}),
       ],
+      minimize: true,
     },
   });
 }
 
 const config = {
-  entry: ['./src/js/app.js', './src/scss/app.scss'],
+  entry: [`./web/app/themes/${theme}/src/js/app.js`, `./web/app/themes/${theme}/src/scss/app.scss`],
   watch: dev,
   output: {
-    path: path.resolve('./dist'),
+    path: path.resolve(`./web/app/themes/${theme}/dist`),
     filename: 'bundle.js',
   },
   devtool: dev ? 'cheap-module-eval-source-map' : false,
@@ -79,17 +90,17 @@ const config = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['./dist']),
+    new CleanWebpackPlugin([`./web/app/themes/${theme}/dist`]),
     new ExtractTextPlugin({
       filename: '[name].css'
-    })
+    }),
   ],
 };
 
 if (!dev) {
   config.plugins.push(new UglifyJS());
 } else {
-  config.plugins.push(new Jarvis({ port: 1337 }));
+  // config.plugins.push(new Jarvis({ port: 1337 }));
 }
 
 
